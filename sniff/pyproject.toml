@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "snowflake-python-connector-sniffer"
+version = "0.1.0"
+description = "This package uses `mitmproxy` to sniff requests from the Snowflake Python connector"
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+packages = [{include = "snowflake_python_connector_sniffer"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+mitmproxy = "^10.0.0"
+snowflake-connector-python = {extras = ["pandas"], version = "^3.2.0"}
+python-dotenv = "^1.0.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
