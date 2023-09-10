@@ -1,6 +1,29 @@
 version: 3
 
 tasks:
+  sniff:run-driver:
+    desc: Run the canonical Snowflake Python connector with a given query
+    dir: sniff
+    env:
+      # Fools `requests` into trusting the mitmproxy CA
+      REQUESTS_CA_BUNDLE: /usr/local/share/ca-certificates/mitmproxy.crt
+      HTTP_PROXY: http://localhost:8080
+      HTTPS_PROXY: http://localhost:8080
+    cmds:
+      - python3.11 -m poetry run python sniff/app.py {{.CLI_ARGS}}
+
+  sniff:install-ca:
+    desc: Install `mitmproxy`s Certificate Authority so its trusted by your operating system. (Debian and Ubuntu)
+    cmds:
+      - sudo cp ~/.mitmproxy/mitmproxy-ca-cert.pem /usr/local/share/ca-certificates/mitmproxy.crt
+      - sudo update-ca-certificates
+
+  sniff:proxy:
+    desc: Run `mitmproxy` to intercept Snowflake requests
+    dir: sniff
+    cmds:
+      - python3.11 -m poetry run mitmweb
+
   test:
     desc: Run pytest over the codebase
     cmds:
